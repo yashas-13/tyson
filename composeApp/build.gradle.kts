@@ -159,6 +159,8 @@ kotlin {
             implementation(libs.reorderable)
 
             implementation(libs.sqldelight.runtime)
+
+            implementation("com.posthog:posthog-kmp:0.1.0")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -254,6 +256,26 @@ class VersionGeneratorPlugin : Plugin<Project> {
 
                 object Version {
                     const val appVersion = "$appVersion"
+                }
+                """.trimIndent(),
+            )
+
+            // Generate PostHog build config from environment variables
+            val postHogApiKey = System.getenv("POSTHOG_API_KEY") ?: "phc_qs5bWGSxQhH5CpEcUEBJfbcUDKuLnzjLfP6MQZnEXSRB"
+            val postHogHost = System.getenv("POSTHOG_HOST") ?: "https://us.i.posthog.com"
+            val postHogConfigFile =
+                layout.buildDirectory
+                    .file("generated/src/commonMain/kotlin/com/inspiredandroid/kai/PostHogBuildConfig.kt")
+                    .get()
+                    .asFile
+            postHogConfigFile.parentFile?.mkdirs()
+            postHogConfigFile.writeText(
+                """
+                package com.inspiredandroid.kai
+
+                object PostHogBuildConfig {
+                    const val API_KEY = "$postHogApiKey"
+                    const val HOST = "$postHogHost"
                 }
                 """.trimIndent(),
             )

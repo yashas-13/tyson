@@ -17,6 +17,7 @@ import com.inspiredandroid.kai.tools.isLocalNetworkUrl
 import com.inspiredandroid.kai.ui.markdown.KaiUiBlock
 import com.inspiredandroid.kai.ui.markdown.KaiUiError
 import com.inspiredandroid.kai.ui.markdown.parseMarkdown
+import com.posthog.kmp.PostHog
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.extension
 import kai.composeapp.generated.resources.Res
@@ -221,6 +222,14 @@ class ChatViewModel(
             }
             try {
                 dataRepository.ask(strippedQuestion, files, uiSubmission, activeSkillId)
+                PostHog.capture(
+                    event = "message_sent",
+                    properties = mapOf(
+                        "service_id" to dataRepository.currentService().id,
+                        "has_files" to files.isNotEmpty(),
+                        "skill_used" to (activeSkillId != null),
+                    ),
+                )
 
                 // Auto-retry in interactive mode if the response has no valid kai-ui
                 if (_state.value.isInteractiveMode) {
@@ -491,6 +500,7 @@ class ChatViewModel(
         currentJob = null
         dataRepository.startNewChat()
         dataRepository.setInteractiveMode(false)
+        PostHog.capture("new_chat_started")
         _state.update {
             it.copy(error = null, isInteractiveMode = false, isLoading = false)
         }
@@ -499,6 +509,7 @@ class ChatViewModel(
     private fun enterInteractiveMode() {
         dataRepository.startNewChat()
         dataRepository.setInteractiveMode(true)
+        PostHog.capture("interactive_mode_entered")
         _state.update {
             it.copy(isInteractiveMode = true, error = null)
         }

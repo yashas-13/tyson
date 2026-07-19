@@ -14,6 +14,9 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import androidx.navigation.compose.rememberNavController
+import com.posthog.kmp.PostHog
+import com.posthog.kmp.PostHogConfig
+import com.posthog.kmp.PostHogContext
 import kai.composeapp.generated.resources.Res
 import kai.composeapp.generated.resources.logo
 import nl.marc_apps.tts.TextToSpeechEngine
@@ -24,6 +27,13 @@ import org.jetbrains.compose.resources.painterResource
 
 fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
+    PostHog.setup(
+        config = PostHogConfig(
+            apiKey = PostHogBuildConfig.API_KEY,
+            host = PostHogBuildConfig.HOST,
+        ),
+        context = PostHogContext(),
+    )
     // Help AWT/Skiko pick up HiDPI on Linux/Wayland (Sway, GNOME fractional scaling).
     // Without this, the JVM ignores GDK_SCALE and renders at 1× on a hi-res monitor.
     if (System.getProperty("sun.java2d.uiScale.enabled") == null) {

@@ -6,6 +6,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.inspiredandroid.kai.data.TaskScheduler
 import com.inspiredandroid.kai.sandbox.sandboxModule
+import com.posthog.kmp.PostHog
+import com.posthog.kmp.PostHogConfig
+import com.posthog.kmp.PostHogContext
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -16,6 +19,13 @@ class KaiApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        PostHog.setup(
+            config = PostHogConfig(
+                apiKey = PostHogBuildConfig.API_KEY,
+                host = PostHogBuildConfig.HOST,
+            ),
+            context = PostHogContext(this),
+        )
         startKoin {
             androidContext(this@KaiApplication)
             modules(appModule, sandboxModule)

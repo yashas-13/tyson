@@ -13,6 +13,9 @@ import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.ExperimentalBrowserHistoryApi
 import androidx.navigation.bindToBrowserNavigation
 import androidx.navigation.compose.rememberNavController
+import com.posthog.kmp.PostHog
+import com.posthog.kmp.PostHogConfig
+import com.posthog.kmp.PostHogContext
 import kotlinx.browser.document
 import kotlinx.browser.window
 import nl.marc_apps.tts.TextToSpeechEngine
@@ -20,6 +23,13 @@ import nl.marc_apps.tts.rememberTextToSpeechOrNull
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
+    PostHog.setup(
+        config = PostHogConfig(
+            apiKey = PostHogBuildConfig.API_KEY,
+            host = PostHogBuildConfig.HOST,
+        ),
+        context = PostHogContext(),
+    )
     val body = document.body ?: return
     document.getElementById("loader")?.remove()
     ComposeViewport(body) {
