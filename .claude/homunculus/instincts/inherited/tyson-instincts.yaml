@@ -1,0 +1,299 @@
+# Instincts generated from https://github.com/yashas-13/tyson
+# Generated: 2026-07-19T00:31:26.371Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: tyson-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/yashas-13/tyson
+---
+
+# Tyson Commit Length
+
+## Action
+
+Keep commit messages concise (~46 characters)
+
+## Evidence
+
+- Average commit message length: 46 chars
+- Based on 2 commits
+
+---
+id: tyson-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/yashas-13/tyson
+---
+
+# Tyson Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: tyson-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/yashas-13/tyson
+---
+
+# Tyson Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: tyson-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/yashas-13/tyson
+---
+
+# Tyson Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: tyson-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/yashas-13/tyson
+---
+
+# Tyson Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: tyson-instinct-file-naming
+trigger: "When creating a new Kotlin file"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct File Naming
+
+## Action
+
+Name the file using PascalCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.files: PascalCase
+
+---
+id: tyson-instinct-function-naming
+trigger: "When defining a new function in Kotlin"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Function Naming
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.functions: camelCase
+
+---
+id: tyson-instinct-class-naming
+trigger: "When defining a new class in Kotlin"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.classes: PascalCase
+
+---
+id: tyson-instinct-constant-naming
+trigger: "When defining a constant in Kotlin"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.constants: SCREAMING_SNAKE_CASE
+
+---
+id: tyson-instinct-import-style
+trigger: "When importing modules in Kotlin files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in codeStyle.importStyle: relative
+
+---
+id: tyson-instinct-export-style
+trigger: "When exporting modules or symbols"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in codeStyle.exportStyle: named
+
+---
+id: tyson-instinct-test-location
+trigger: "When adding new tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Test Location
+
+## Action
+
+Place test files in a separate directory from source code
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation: separate
+
+---
+id: tyson-instinct-commit-format
+trigger: "When writing a commit message"
+confidence: 0.8
+domain: git
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Commit Format
+
+## Action
+
+Write a short, imperative summary without a prefix (average length ~46 characters)
+
+## Evidence
+
+- Seen in commit: Add PostHog analytics integration
+- Seen in commit: Add PostHog build-time environment variables documentation
+- Pattern in commits.prefixes: []
+- Pattern in commits.averageLength: 46
+
+---
+id: tyson-instinct-folder-usage-composeApp
+trigger: "When adding or organizing code related to the Compose application"
+confidence: 0.7
+domain: architecture
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Folder Usage ComposeApp
+
+## Action
+
+Place it under the 'composeApp' folder
+
+## Evidence
+
+- Pattern in architecture.folderStructure.commonFolders: composeApp
+
+---
+id: tyson-instinct-folder-usage-androidApp
+trigger: "When adding or organizing code related to the Android application"
+confidence: 0.7
+domain: architecture
+source: repo-analysis
+source_repo: yashas-13/tyson
+---
+
+# Tyson Instinct Folder Usage AndroidApp
+
+## Action
+
+Place it under the 'androidApp' folder
+
+## Evidence
+
+- Pattern in architecture.folderStructure.commonFolders: androidApp
+
