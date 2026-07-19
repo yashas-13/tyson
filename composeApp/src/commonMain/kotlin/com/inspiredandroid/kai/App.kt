@@ -56,6 +56,7 @@ import com.inspiredandroid.kai.ui.handCursor
 import com.inspiredandroid.kai.ui.rememberSandboxAwareUriHandler
 import com.inspiredandroid.kai.ui.settings.SettingsScreen
 import com.inspiredandroid.kai.ui.withBlackBackground
+import com.posthog.kmp.PostHog
 import kai.composeapp.generated.resources.Res
 import kai.composeapp.generated.resources.tab_chat
 import kai.composeapp.generated.resources.tab_settings
@@ -119,6 +120,16 @@ private fun AppContent(
     onAppOpens: ((Int) -> Unit)?,
 ) {
     val appSettings = koinInject<AppSettings>()
+
+    // Set platform and version properties once per session
+    LaunchedEffect(Unit) {
+        PostHog.setPersonProperties(
+            userPropertiesToSet = mapOf(
+                "platform" to currentPlatform.displayName,
+                "app_version" to Version.appVersion,
+            ),
+        )
+    }
 
     // Track app opens after Koin is initialized
     onAppOpens?.let { callback ->

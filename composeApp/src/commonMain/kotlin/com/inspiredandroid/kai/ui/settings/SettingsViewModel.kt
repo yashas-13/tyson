@@ -33,6 +33,7 @@ import com.inspiredandroid.kai.skills.parseGitHubSkillUrl
 import com.inspiredandroid.kai.tools.LocalNetworkPermissionController
 import com.inspiredandroid.kai.tools.NotificationPermissionController
 import com.inspiredandroid.kai.tools.isLocalNetworkUrl
+import com.posthog.kmp.PostHog
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
@@ -328,6 +329,10 @@ class SettingsViewModel(
 
     private fun onAddService(service: Service) {
         val instance = dataRepository.addConfiguredService(service.id)
+        PostHog.capture(
+            event = "service_added",
+            properties = mapOf("service_type" to service.id),
+        )
         refreshServiceList()
         _state.update { it.copy(expandedServiceId = instance.instanceId) }
         checkConnection(instance.instanceId, service)
@@ -417,6 +422,13 @@ class SettingsViewModel(
     private fun onSelectModel(instanceId: String, modelId: String) {
         val entry = _state.value.configuredServices.find { it.instanceId == instanceId } ?: return
         dataRepository.updateInstanceSelectedModel(instanceId, entry.service, modelId)
+        PostHog.capture(
+            event = "model_selected",
+            properties = mapOf(
+                "service_type" to entry.service.id,
+                "model_id" to modelId,
+            ),
+        )
         refreshInstanceModels(instanceId)
     }
 
@@ -483,6 +495,7 @@ class SettingsViewModel(
 
     private fun onToggleHeartbeat(enabled: Boolean) {
         dataRepository.setHeartbeatEnabled(enabled)
+        if (enabled) PostHog.capture("heartbeat_enabled")
         _state.update { it.copy(isHeartbeatEnabled = enabled) }
     }
 
@@ -663,6 +676,10 @@ class SettingsViewModel(
 
     private fun onDownloadLocalModel(model: LocalModel) {
         dataRepository.startLocalModelDownload(model)
+        PostHog.capture(
+            event = "local_model_download_started",
+            properties = mapOf("model_id" to model.id),
+        )
     }
 
     private fun onCancelLocalModelDownload() {
@@ -702,7 +719,13 @@ class SettingsViewModel(
         _state.update { it.copy(uiScale = scale) }
     }
 
-    private fun onExportSettings(sections: Set<ImportSection>): String = dataRepository.exportSettingsToJson(sections)
+    private fun onExportSettings(sections: Set<ImportSection>): String {
+        PostHog.capture(
+            event = "settings_exported",
+            properties = mapOf("section_count" to sections.size),
+        )
+        return dataRepository.exportSettingsToJson(sections)
+    }
 
     private fun onPrepareExport(): Map<ImportSection, String?> = dataRepository.getExportPreview()
 
@@ -775,6 +798,7 @@ class SettingsViewModel(
     private fun onAddMcpServer(name: String, url: String, headers: Map<String, String>) {
         viewModelScope.launch(backgroundDispatcher) {
             val config = dataRepository.addMcpServer(name, url, headers)
+            PostHog.capture("mcp_server_added")
             refreshMcpServers()
             connectMcpServerWithStatus(config.id)
         }
@@ -877,7 +901,11 @@ class SettingsViewModel(
         viewModelScope.launch(backgroundDispatcher) {
             val result = install()
             result.fold(
-                onSuccess = {
+                onSuccess = { manifest ->
+                    PostHog.capture(
+                        event = "skill_installed",
+                        properties = mapOf("skill_id" to manifest.id),
+                    )
                     refreshSkills()
                     _state.update { it.copy(isInstallingSkill = false, showAddSkillDialog = false) }
                 },
