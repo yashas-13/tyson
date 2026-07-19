@@ -1,0 +1,6 @@
+interface:
+  display_name: "Tyson"
+  short_description: "Repo-specific patterns and workflows for tyson"
+  default_prompt: "Use the tyson repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
